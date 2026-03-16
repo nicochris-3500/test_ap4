@@ -1,51 +1,60 @@
 <?php
-require('credentials.php');
 
-$connexion = new PDO(
-    "mysql:host=$host;dbname=$dbname;charset=$charset",
-    $user,
-    $password,
-    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-);
+require "credentials.php";
 
-$requete = $connexion->prepare("SELECT * FROM MATERIEL_M2L ORDER BY ID");
-$requete->execute();
-$materiels = $requete->fetchAll(PDO::FETCH_ASSOC);
+$conn = new mysqli($host, $user, $password, $dbname);
+
+if ($conn->connect_error) {
+die("Connexion échouée");
+}
+
+$sql = "SELECT * FROM materiel_m2l";
+$result = $conn->query($sql);
+
 ?>
+
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>Liste du matériel</title>
+<meta charset="UTF-8">
+<title>Inventaire M2L</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>Liste du matériel</h1>
+<h1>Inventaire du matériel</h1>
 
-<table border="1" cellpadding="6">
-    <tr>
-        <th>ID</th>
-        <th>Nom</th>
-        <th>Année</th>
-        <th>Détails</th>
-        <th>Type</th>
-        <th>Appartenance</th>
-    </tr>
+<table>
 
-    <?php foreach ($materiels as $m): ?>
-        <tr>
-            <td>
-                <a href="show.php?id=<?= $m['ID'] ?>">
-                    <?= htmlspecialchars($m['ID']) ?>
-                </a>
-            </td>
-            <td><?= htmlspecialchars($m['Nom']) ?></td>
-            <td><?= htmlspecialchars($m['Année']) ?></td>
-            <td><?= htmlspecialchars($m['Détails']) ?></td>
-            <td><?= htmlspecialchars($m['Type']) ?></td>
-            <td><?= htmlspecialchars($m['Appartenance']) ?></td>
-        </tr>
-    <?php endforeach; ?>
+<tr>
+<th>ID</th>
+<th>Nom</th>
+<th>Année</th>
+<th>Détails</th>
+<th>Type</th>
+<th>Appartenance</th>
+</tr>
+
+<?php
+
+while($row = $result->fetch_assoc()){
+
+echo "<tr>";
+
+echo "<td>".$row["ID"]."</td>";
+echo "<td>".$row["Nom"]."</td>";
+echo "<td>".$row["Annee"]."</td>";
+echo "<td>".$row["Details"]."</td>";
+echo "<td>".$row["Type"]."</td>";
+echo "<td>".$row["Appartenance"]."</td>";
+
+echo "</tr>";
+
+}
+
+?>
+
 </table>
 
 </body>
