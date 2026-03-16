@@ -1,0 +1,16 @@
+CREATE DATABASE materiel_m2l;
+USE materiel_m2l;
+
+CREATE TABLE type (
+id_type INT PRIMARY KEY AUTO_INCREMENT,
+libelle VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE materiel_m2l(
+ID INT PRIMARY KEY,
+Nom VARCHAR(30),
+Annee INT,
+Details VARCHAR(50),
+Type VARCHAR(20),
+Appartenance VARCHAR(30)
+);
